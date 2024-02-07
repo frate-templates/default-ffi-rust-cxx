@@ -1,0 +1,4 @@
+[submodule "scripts/frate"]
+	path = scripts/frate
+	url = https://github.com/frate-templates/frate-callbacks.git 
+	branch = dev

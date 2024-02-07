@@ -1,0 +1,9 @@
+#include "rustlib_bridge/lib.h"
+#include <iostream>
+
+int  main(int argc, char** argv){
+  rust::String rust_string = frate_rust();
+  std::string hello_world = rust_string.c_str();
+  std::cout << hello_world << "\n";
+  return 0;
+}

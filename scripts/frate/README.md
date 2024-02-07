@@ -1,0 +1,1 @@
+# frate default callbacks

@@ -1,0 +1,82 @@
+{{ frate.toolchains("") }}
+
+cmake_minimum_required( VERSION {{ cmake_version }} )
+project(
+  {{ name }}
+  VERSION {{ version }}
+  {%if lang == "cpp"%}LANGUAGES CXX
+  {%else if lang == "c"%}LANGUAGES C
+  {%endif%}
+)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD {{ lang_version }})
+include(cmake/CPM.cmake)
+
+{{ frate.sccache("") }}
+{{ frate.ccache("") }}
+
+CPMAddPackage(
+  NAME Corrosion
+  GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
+  GIT_TAG master
+)
+corrosion_import_crate(MANIFEST_PATH rust_lib/Cargo.toml)
+corrosion_add_cxxbridge(rustlib_bridge CRATE rust_lib MANIFEST_PATH rust_lib FILES lib.rs)
+
+find_program(CXXBRIDGE cxxbridge PATHS "$ENV{HOME}/.cargo/bin/")
+if (CXXBRIDGE STREQUAL "CXXBRIDGE-NOTFOUND")
+    message("Could not find cxxbridge, trying to install with `cargo install cxxbridge-cmd'")
+    find_program(CARGO cargo PATHS "$ENV{HOME}/.cargo/bin/")
+    if (CARGO STREQUAL "CARGO-NOTFOUND")
+        message(FATAL_ERROR "Requires cargo available in path, install via rustup https://rustup.rs/")
+    endif()
+    execute_process(COMMAND ${CARGO} install cxxbridge-cmd)
+    find_program(CXXBRIDGE cxxbridge PATHS "$ENV{HOME}/.cargo/bin/")
+endif()
+
+{{ frate.packages("") }}
+
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
+  "src/**.cpp"
+  "src/**.c"
+  "src/**/**.cpp"
+  "src/**/**.c"
+)
+
+message("Sources: ${SOURCES}")
+
+{{ frate.flags("") }}
+
+include_directories(${CMAKE_SOURCE_DIR}/{{ include_dir }})
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/{{ include_dir }})
+
+if(NOT DEFINED RELEASE)
+  set(RELEASE 0)
+endif()
+
+add_executable({{name}} ${SOURCES})
+
+{{ frate.compile_modes("") }}
+
+set(BUILD_DIR {{ build_dir }})
+set(dir ${CMAKE_CURRENT_SOURCE_DIR}/../Compile/)
+set(EXECUTABLE_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
+set(LIBRARY_OUTPUT_PATH ${dir} CACHE PATH "Build directory" FORCE)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir})
+set(CMAKE_BUILD_FILES_DIRECTORY ${dir})
+set(CMAKE_BUILD_DIRECTORY ${dir})
+set(CMAKE_BINARY_DIR  ${dir})
+set(EXECUTABLE_OUTPUT_PATH ${dir})
+set(LIBRARY_OUTPUT_PATH ${dir}lib)
+set(CMAKE_CACHEFILE_DIR ${dir})
+set_target_properties({{name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{build_dir}})
+set_target_properties({{name}} PROPERTIES LIBRARY_OUTPUT_DIRECTORY {{build_dir}})
+target_link_libraries(${PROJECT_NAME} PRIVATE rustlib_bridge)
+
+
+
+{{ frate.targets("")  }}
+
+install(TARGETS {{name}} DESTINATION bin)
+{{ frate.cpack("") }}
+
