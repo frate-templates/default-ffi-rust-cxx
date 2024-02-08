@@ -1,6 +1,6 @@
 {
   "version": "0.1",
-  "name": "default-executable",
+  "name": "default-rs-ffi-executable",
   "description": "Default executable project template",
   "keywords": [],
   "build_dir": "build",
@@ -12,13 +12,13 @@
   "system_libs": [],
   "supported_compilers": ["g++", "clang++", "clang", "gcc"],
   "supported_languages": ["cpp", "c"],
-  "supported_language_versions": ["20","17","14","11"],
-  "supported_toolchains": [
+  "supported_language_versions": ["20","17","14","11"], "supported_toolchains": [
     "x86_64-linux-gnu",
     "x86_64-apple-darwin",
     "x86_64-pc-windows-gnu"
   ],
   "default_mode": "Release",
+  "config":{}
   "modes": [
     {
       "dependencies": [],
@@ -55,12 +55,6 @@
     }
   },
   "prompts": {
-    "example" : {
-      "type" : "bool",
-      "default" : "y",
-      "text" : "Do you like frate?",
-      "lua_callback" : "do_you_like_frate",
-      "required" : true
-    }
+
   }
 }
