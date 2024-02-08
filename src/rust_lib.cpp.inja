@@ -1,0 +1,15 @@
+#include <rust_lib.hpp>
+#include <iostream>
+
+BlobstoreClient::BlobstoreClient() {
+  std::cout << "BlobstoreClient created" << std::endl;
+}
+
+
+void BlobstoreClient::say_hello(rust::Str name) const {
+  std::cout << "Hello, " << name << "!" << std::endl;
+}
+
+std::unique_ptr<BlobstoreClient> new_blobstore_client() {
+  return std::unique_ptr<BlobstoreClient>(new BlobstoreClient());
+}
