@@ -1,6 +1,6 @@
 {
   "version": "0.1",
-  "name": "default-executable",
+  "name": "default-rs-ffi-executable",
   "description": "Default executable project template",
   "keywords": [],
   "build_dir": "build",
@@ -52,15 +52,6 @@
     },
     "cpack_ubuntu" : {
       "depends" : {}
-    }
-  },
-  "prompts": {
-    "example" : {
-      "type" : "bool",
-      "default" : "y",
-      "text" : "Do you like frate?",
-      "lua_callback" : "do_you_like_frate",
-      "required" : true
     }
   }
 }
