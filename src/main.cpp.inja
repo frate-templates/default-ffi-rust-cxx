@@ -1,9 +1,14 @@
 #include "rustlib_bridge/lib.h"
 #include <iostream>
 
-int  main(int argc, char** argv){
-  rust::String rust_string = frate_rust();
-  std::string hello_world = rust_string.c_str();
-  std::cout << hello_world << "\n";
+int main() {
+  //rust function
+  std::string rust_string = frate_rust().c_str();
+
+  //shared c++ and rust type
+  test test;
+  test.a = 10;
+
+  std::cout << rust_string << "\n";
   return 0;
 }

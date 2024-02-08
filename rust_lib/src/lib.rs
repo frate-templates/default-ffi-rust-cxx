@@ -1,6 +1,3 @@
-
-
-
 #[cxx::bridge]
 mod ffi {
     extern "Rust" {
