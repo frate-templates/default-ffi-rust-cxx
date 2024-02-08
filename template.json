@@ -53,8 +53,5 @@
     "cpack_ubuntu" : {
       "depends" : {}
     }
-  },
-  "prompts": {
-
   }
 }
