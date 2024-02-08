@@ -2,13 +2,14 @@
 #include <iostream>
 
 int main() {
-  //rust function
   std::string rust_string = frate_rust().c_str();
 
-  //shared c++ and rust type
-  test test;
-  test.a = 10;
+  Point point;
+  init_point(point);
 
   std::cout << rust_string << "\n";
+
+  std::cout << "Point: " << point.x << ", " << point.y << "\n";
+
   return 0;
 }
